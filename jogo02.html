@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            margin: auto;
+        }
+    </style>
+    <script src="sprite.js"></script>
+</head>
+<body>
+    <script>
+    var UP = 87,LEFT = 65, RIGHT = 68;
+    var canvas, LARGURA, ALTURA, ctx, frames = 1, jogador1, maxPulos = 2;
+
+/*    jogador1 = {
+        x: 50,
+        y: 0,
+        largura: 60,
+        altura: 60,
+        gravidade: 1.6,
+        velocidade: 0,
+
+        atualiza: function() {
+            this.velocidade += this.gravidade;
+            this.y += this.velocidade;
+
+            if (this.y + this.altura >= ALTURA)
+                this.y = ALTURA - this.altura;
+        },
+
+        desenha: function() {
+
+            ctx.fillStyle = "red";
+            ctx.fillRect(this.x, this.y, this.largura, this.altura);
+        }
+    }*/
+
+
+    function tecla() {
+
+        if (event.type == 'keydown') {
+            if (event.keyCode == LEFT)
+                jogador1.esquerda();
+
+            if (event.keyCode == RIGHT)
+                jogador1.direita();
+
+            if (event.keyCode == UP)
+                jogador1.pula();
+
+
+        }
+
+        else if (event.type == 'keyup') {
+            if (event.keyCode == RIGHT)
+                jogador1.stop();
+
+            if (event.keyCode == LEFT)
+                jogador1.stop();
+
+        }
+    }
+
+
+
+    // função principal que inicia o jogo
+    function main() {
+
+        // pega o valor total da largura e da altura da janela do navegador.
+        LARGURA = window.innerWidth;
+        ALTURA  = window.innerHeight;
+
+        // se a largura da tela for maior ou igual a 900
+        // mantenha a largura e a altura com 800
+        if (LARGURA >= 700) {
+            LARGURA = 600;
+            ALTURA = 550;
+        }
+
+        // cria o elemento canvas com o DOM
+        canvas = document.createElement("canvas");
+        // define a largura e a altura da área do elemento canvas
+        canvas.width = LARGURA;
+        canvas.height = ALTURA;
+        // adiciona uma borda preta ao redor do canvas
+        canvas.style.border = "1px solid black";
+        // adiciona o elemento canvas como filho do elemento body no html
+        document.body.appendChild(canvas);
+        // cria o contexto '2d' para o canvas
+        ctx = canvas.getContext('2d');
+        // adiciona o evento ao clicar em uma tecla do teclado
+        document.addEventListener("keydown", tecla );
+
+        document.addEventListener("keyup", tecla );
+
+        // chama a função que faz o loop do jogo
+        roda();
+
+    }
+
+
+    function roda() {
+
+        atualiza();
+        desenha();
+
+        window.requestAnimationFrame(roda);
+    }
+
+    function atualiza() {
+
+        frames++;
+
+        if (frames === 30) {
+            frames = 1;
+        }
+
+        // atualiza os movimentos do jogador1
+        jogador1.atualiza();
+
+    }
+
+    function desenha() {
+        // usado para inserir uma cor no fundo da tela do canvas e
+        // ao mesmo tempo para cobrir o rastro do bloco a cada atualização.
+        ctx.fillStyle = "blue";
+        ctx.fillRect(0,0, LARGURA, ALTURA);
+        // desenha o jogador1
+        jogador1.desenha();
+    }
+
+
+    main();
+
+
+
+
+    </script>
+</body>
+</html>
